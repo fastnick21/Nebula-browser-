@@ -1,66 +1,86 @@
 <!doctype html>
-<html>
-	<head>
-		<meta charset="utf-8" />
-		<meta
-			name="viewport"
-			content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
-		/>
-		<title>Scramjet</title>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#07101f">
+  <title>Nebula Browse</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="/index.css">
+  <!-- These scripts are supplied by the Scramjet-App backend. Keep their paths. -->
+  <script src="/scram/scramjet.all.js"></script>
+  <script src="/baremux/index.js"></script>
+  <script src="/register-sw.js" defer></script>
+  <script src="/search.js" defer></script>
+  <script src="/index.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="Nebula Browse home">
+      <span class="logo">✦</span><span>Nebula <b>Browse</b></span>
+    </a>
+    <span class="topnote">EXPLORE RESPONSIBLY</span>
+  </header>
 
-		<link rel="shortcut icon" content="favicon.webp" />
-	
-		<script src="/scram/scramjet.all.js"></script>
-		<script src="/baremux/index.js"></script>
-		
-		<link rel="stylesheet" href="index.css" />
-		<script src="register-sw.js" defer></script>
-		<script src="search.js" defer></script>
-		<script src="index.js" defer></script>
-	</head>
+  <main>
+    <section class="hero">
+      <div class="eyebrow">✦ YOUR NEXT DESTINATION</div>
+      <h1>Explore the <span>internet.</span></h1>
+      <p class="subtitle">Search the web or enter a website address to open it in Nebula Browse.</p>
 
-	<body>
-		<div title="Scramjet Logo" class="flex-center logo-wrapper header-center">
-			<img class="logo" src="sj.png" alt="Scramjet" />
-			<h1>Scramjet | MW</h1>
-		</div>
-		<div class="flex-center desc left-margin">
-			<p>
-				Scramjet is an experimental interception based web proxy designed to
-				evade internet censorship, bypass arbitrary web browser restrictions and
-				innovate web proxy technologies.
-			</p>
-		</div>
+      <form id="sj-form" class="search-box">
+        <input id="sj-search-engine" value="https://www.google.com/search?q=%s" type="hidden">
+        <label class="sr-only" for="sj-address">Search or website address</label>
+        <span class="search-icon" aria-hidden="true">⌕</span>
+        <input id="sj-address" type="text" placeholder="Search the web or enter a URL…" autocomplete="off" required>
+        <button class="primary" type="submit">Explore ↗</button>
+      </form>
 
-		<form id="sj-form" class="flex-center">
-			<input
-				id="sj-search-engine"
-				value="https://www.google.com/search?q=%s"
-				type="hidden"
-			/>
-			<input id="sj-address" type="text" placeholder="Search the web freely" />
-		</form>
-		<div class="desc left-margin">
-			<p id="sj-error"></p>
-			<pre id="sj-error-code"></pre>
-		</div>
-		<footer>
-			<div>
-				<a
-					title="The Mercury Workshop GitHub organization"
-					href="https://github.com/MercuryWorkshop"
-					>Mercury Workshop</a
-				>
-				<a
-					title="The example demo app for Scramjet"
-					href="https://github.com/MercuryWorkshop/Scramjet-Demo"
-					>GitHub</a
-				>
-				<a title="License information" href="credits.html">Credits</a>
-			</div>
-			<div>
-				<span>Scramjet &copy; MW 2025</span>
-			</div>
-		</footer>
-	</body>
+      <div class="hint">Try a search term, <code>wikipedia.org</code>, or a full website URL.</div>
+      <div class="error-wrap">
+        <p id="sj-error" role="status"></p>
+        <pre id="sj-error-code"></pre>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-heading"><span>QUICK ACCESS</span><span class="line"></span></div>
+      <div class="shortcuts">
+        <button class="shortcut" type="button" data-address="https://www.google.com">
+          <span class="tile-icon blue">⌕</span><strong>Google</strong><small>Search the web</small>
+        </button>
+        <button class="shortcut" type="button" data-address="https://www.wikipedia.org">
+          <span class="tile-icon violet">▤</span><strong>Wikipedia</strong><small>Explore knowledge</small>
+        </button>
+        <button class="shortcut" type="button" data-address="https://www.youtube.com">
+          <span class="tile-icon red">▶</span><strong>YouTube</strong><small>Watch videos</small>
+        </button>
+        <button class="shortcut" type="button" data-address="https://www.bing.com">
+          <span class="tile-icon teal">◎</span><strong>Bing</strong><small>Discover more</small>
+        </button>
+      </div>
+    </section>
+
+    <section class="notice">
+      <span class="notice-icon">ⓘ</span>
+      <p><strong>Heads up:</strong> Some websites may still block access, require sign-in, or behave differently in a proxy. Never enter sensitive passwords into a site you don't trust.</p>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span>✦ Nebula Browse</span>
+    <span>Powered by the open-source Scramjet project</span>
+  </footer>
+
+  <script>
+    // Quick links use the same form and Scramjet navigation flow as manual searches.
+    document.querySelectorAll("[data-address]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const field = document.getElementById("sj-address");
+        field.value = button.dataset.address;
+        document.getElementById("sj-form").requestSubmit();
+      });
+    });
+  </script>
+</body>
 </html>
